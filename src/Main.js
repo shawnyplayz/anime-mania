@@ -1,8 +1,6 @@
 import React, { Component, Suspense } from 'react'
 import { BrowserRouter as Router, Route, Switch, withRouter } from "react-router-dom";
 import Dashboard from './Components/Dashboard/Dashboard';
-import Login from './Components/Login/Login';
-import * as Logo from './images/tabloid.jpg'
 import "./Main.css"
 
 export default class Main extends Component {
@@ -14,12 +12,7 @@ export default class Main extends Component {
           <Suspense fallback="loading">
             <Router>
               <Switch>
-                {/* <Route exact path="/" >
-                  <Login />
-                </Route>
-                <Route path="/News" >
-                  <Login />
-                </Route> */}
+
                 <Route exact path="/" >
                   <Dashboard />
                 </Route>
