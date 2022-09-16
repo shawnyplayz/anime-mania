@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Silkscreen&display=swap");
+
+.shawn-link {
+  line-clamp: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.meri-link {
+  -webkit-box-orient: vertical;
+  display: block /* Fallback for non-WebKit */;
+  display: -webkit-box;
+  font-family: sans-serif;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.heightTitle {
+  height: 6vh;
+}
+.heightText {
+  height: 3vh;
+}
+.heightAuthor {
+  height: 3vh;
+  margin-bottom: 1rem;
+}
+
+.my-head {
+  color: white;
+  font-weight: bold;
+  font-family: "Silkscreen", cursive;
+}
+.has-search .form-control {
+  padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 2.375rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+}
