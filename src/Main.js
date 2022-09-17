@@ -7,7 +7,7 @@ export default class Main extends Component {
 
   render() {
     return (
-      <div className="bgImg">
+      <div className="">
         <div className='main_container'>
           <Suspense fallback="loading">
             <Router>

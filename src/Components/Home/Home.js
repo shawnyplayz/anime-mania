@@ -5,7 +5,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./Home.css"
 import { AiOutlineArrowRight, AiOutlineSearch } from 'react-icons/ai';
-import { BsFillHeartFill } from 'react-icons/bs';
+import { BsArrowRightSquareFill, BsFillHeartFill } from 'react-icons/bs';
+import arrowImage from "../../../src/images/arrow.jpg"
 
 export default class Home extends Component {
   constructor(props) {
@@ -13,67 +14,98 @@ export default class Home extends Component {
     this.state = {
       animeArr: [],
       animeLength: null,
-      searchQuery: null
+      searchQuery: "",
+      page: 1
     };
     this.handleAll = this.handleAll.bind(this)
+    this.clickNextButton = this.clickNextButton.bind(this)
+    this.clickPrevButton = this.clickPrevButton.bind(this)
   }
   componentDidMount() {
-    this.firstCall();
+    this.firstCall(this.state.page);
   }
-  firstCall = async () => {
+  firstCall = async (page) => {
+    debugger
     let asd = [];
     await axios
-      .get(`https://api.jikan.moe/v4/characters?page=0&limit=15&q&order_by=fav
+      .get(`https://api.jikan.moe/v4/characters?page=${page}&limit=15&q&order_by=fav
 orites&sort=desc`)
       // .get(`https://hacker-news.firebaseio.com/v0/item/${i + 1}.json`)
       .then(function (response) {
-        debugger
+
         asd.push(response.data);
       })
       .catch(function (error) {
         console.log(error);
       });
+    debugger
     this.setState({
       animeArr: asd[0].data,
       animeLength: asd[0].pagination.items.total
     });
   };
-  async search() {
+  async search(page) {
     debugger
     let asd = [];
-    await axios
-      .get(`https://api.jikan.moe/v4/characters?page=0&limit=15&q=${this.state.searchQuery}&order_by=fav
-orites&sort=desc`)
-      .then(function (response) {
-        debugger
-        asd.push(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    if ((asd[0].data).length === 0) {
-      this.setState({
-        animeArr: null
-      })
+    if (this.state.searchQuery === "") {
+      this.firstCall(page)
     }
-    this.setState({
-      animeArr: asd[0].data,
-    });
+    else {
+      let urlSearch = this.state.searchQuery
+      console.log(urlSearch);
+      await axios
+        .get(`https://api.jikan.moe/v4/characters?page=${page}&limit=15&q=${urlSearch}&order_by=fav
+orites&sort=desc`)
+        .then(function (response) {
+          asd.push(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      // if ((asd[0].data).length === 0) {
+      //   this.setState({
+      //     animeArr: null
+      //   })
+      // }
+      this.setState({
+        animeArr: asd[0].data ? asd[0].data : [],
+        animeLength: asd[0].pagination.items.total
+      });
+
+    }
 
   }
 
-  handleAll(e) {
-    this.setState({
-      searchQuery: e.target.value
+  async handleAll(e) {
+    debugger
+    await this.setState({
+      searchQuery: e.target.value,
+      page: 1
     })
-  }
+    setTimeout(() => {
+      this.search(this.state.page)
+    }, 1000);
 
+  }
+  async clickNextButton() {
+    debugger
+    await this.setState({
+      page: this.state.page + 1
+    })
+    this.search(this.state.page)
+  }
+  async clickPrevButton() {
+    await this.setState({
+      page: this.state.page - 1
+    })
+    this.search(this.state.page)
+  }
   render() {
     return (
       <div className="container p-0">
         <h1 className="display-3 my-head">Search Anime Characters</h1>
         <div className="row">
-          <div className="row justify-content-center">
+          <div className="row justify-content-center ">
             <div className="col-lg-6 col-md-6 col-sm-12 my-3">
               <div className="input-group">
                 <input type="text" className="form-control" placeholder="Search this blog" onChange={this.handleAll} />
@@ -86,58 +118,94 @@ orites&sort=desc`)
             </div>
           </div>
         </div>
-        <div className="row justify-content-center">
+        <div className="row justify-content-center ">
           <div className="col-lg-6 col-md-6 col-sm-12">
             <h5>Total {this.state.animeLength} matching anime Characters found</h5>
           </div>
         </div>
-        <div className="row">
+        <div className="row  shadow-lg">
           <div className="row justify-content-center">
+
             <div className="col-lg-12 opaque">
               <div className=" p-2 mt-4">
                 {
-                  this.state.animeArr.map((el, index) => {
-                    debugger
-                    return (
-                      <div className="card my-2 shadow "
-                        key={index}>
-                        <div className="d-flex flex-row">
-                          <div className="img-fluid border">
-                            <img className="card-img" src={el.images.jpg.image_url} alt="Card image cap"></img>
-                          </div>
-                          <div className="card-Header d-flex justify-content-start w-75 pl-3 border">
-                            <h3>{el.name}</h3>
-                            {el.nicknames.map(item =>
-                              <button className="btn">
-                                {item}
-                              </button>
-                            )}
-                          </div>
-                          <div className="card-Text d-flex justify-content-around border">
-                            <h4><BsFillHeartFill />{el.favorites}</h4>
-                          </div>
-                          <div className="d-flex justify-content-center">
-                            <h1><AiOutlineArrowRight /></h1>
-                          </div>
-                        </div>
-                        {/* <div className="d-flex  justify-content-start border">
-                          <div className="img-fluid ">
-                            <img className="card-img" src={el.images.jpg.image_url} alt="Card image cap"></img>
-                          </div>
-                        </div>
-                        <div className="card-Header justify-content-left">
-                          {el.name}
-                        </div>
-                        <div className="card-Body">
-                          {el.favorites}
-                        </div> */}
-                      </div>
+                  this.state.animeArr !== [] ?
+                    this.state.animeArr.map((el, index) => {
+                      return (
+                        <>
+                          <div className="card my-2 shadow "
+                            key={index}>
+                            <div className="row ">
+                              <div className="col-1">
+                                <div className="wrapper-img">
+                                  <img src={el.images.jpg.image_url} alt="img" className="img-fluid  anime-img" />
+                                </div>
+                              </div>
+                              <div className="col-6 mx-4">
+                                <div className="wrap-my-content">
+                                  <div className="my-content">
+                                    <div className="anime-header">
+                                      <p className="anime-title">{el.name}</p>
+                                    </div>
+                                    <div className="anime-btns">
+                                      {el.nicknames.map(item =>
+                                        <p className="my-2 me-4 my-btn">
+                                          {item}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
 
+
+                              </div>
+                              <div className="col-2">
+                                <div className="wrap-my-heart h-100 my-3">
+                                  <p className=""><BsFillHeartFill className="mx-2" />{el.favorites}</p>
+                                </div>
+                              </div>
+                              <div className="col-2">
+                                <div className="my-arrow h-100">
+                                  <div className="d-flex justify-content-end align-items-center h-100">
+                                    <img src={arrowImage} alt="arrow" className="img-fluid my-arrow-img" />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+
+                        </>
+                      )
+                    }
                     )
-                  }
-                  )
+                    :
+                    <>
+                      <h2>No Results Found!</h2>
+                    </>
                 }
               </div>
+
+            </div>
+            <div className="container d-flex justify-content-between my-3">
+              <button
+                disabled={this.state.page <= 1}
+                type="button"
+                className="btn btn-dark mr-4"
+                onClick={this.clickPrevButton}
+              >
+                &larr; Prev
+              </button>
+              <button
+                disabled={
+                  this.state.page + 1 > Math.ceil(this.state.animeLength / 15)
+                }
+                type="button"
+                className="btn btn-dark mr-4"
+                onClick={this.clickNextButton}
+              >
+                Next &rarr;
+              </button>
             </div>
           </div>
 
