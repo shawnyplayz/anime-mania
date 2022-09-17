@@ -108,7 +108,7 @@ orites&sort=desc`)
           <div className="row justify-content-center ">
             <div className="col-lg-6 col-md-6 col-sm-12 my-3">
               <div className="input-group">
-                <input type="text" className="form-control" placeholder="Search this blog" onChange={this.handleAll} />
+                <input type="text" className="form-control" placeholder="Search your Character" onChange={this.handleAll} />
                 <div className="input-group-append">
                   <button className="btn btn-secondary" type="button" onClick={(e) => this.search(e)}>
                     <AiOutlineSearch />
@@ -161,7 +161,7 @@ orites&sort=desc`)
                               </div>
                               <div className="col-2">
                                 <div className="wrap-my-heart h-100 my-3">
-                                  <p className=""><BsFillHeartFill className="mx-2" />{el.favorites}</p>
+                                  <p className=""><BsFillHeartFill className="mx-2 text-danger" />{el.favorites}</p>
                                 </div>
                               </div>
                               <div className="col-2">
