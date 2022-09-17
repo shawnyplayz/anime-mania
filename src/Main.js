@@ -1,6 +1,6 @@
 import React, { Component, Suspense } from 'react'
 import { BrowserRouter as Router, Route, Switch, withRouter } from "react-router-dom";
-import Dashboard from './Components/Dashboard/Dashboard';
+import Home from './Components/Home/Home';
 import "./Main.css"
 
 export default class Main extends Component {
@@ -14,19 +14,16 @@ export default class Main extends Component {
               <Switch>
 
                 <Route exact path="/" >
-                  <Dashboard />
+                  <Home />
                 </Route>
-                <Route path="/Home" >
-                  <Dashboard />
-                </Route>
-                <Route path="/Bookmark" >
-                  <Dashboard />
+                <Route path="/anime" >
+                  <Home />
                 </Route>
               </Switch >
             </Router >
           </Suspense >
         </div >
-      </div>
+      </div >
 
     )
   }
