@@ -129,7 +129,7 @@ orites&sort=desc`)
             <div className="col-lg-12 opaque">
               <div className=" p-2 mt-4">
                 {
-                  this.state.animeArr !== [] ?
+                  this.state.animeLength !== 0 ?
                     this.state.animeArr.map((el, index) => {
                       return (
                         <>
@@ -172,9 +172,7 @@ orites&sort=desc`)
                                 </div>
                               </div>
                             </div>
-
                           </div>
-
                         </>
                       )
                     }
